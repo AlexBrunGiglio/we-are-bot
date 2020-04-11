@@ -3,6 +3,8 @@ const bot = new Discord.Client()
 const Google = require('./commands/google')
 const Ping = require('./commands/ping')
 const Help = require('./commands/help')
+const Announce = require('./commands/announce')
+const Welcome = require('./commands/welcome')
 
 
 bot.on('ready', function () {
@@ -17,11 +19,11 @@ bot.on('ready', function () {
           { 
             "embed": {      //Message embed 
                 "title": "Bienvenue sur We Are Gamers !",
-                "description": "Nous espérons que tu vas t'amuser !\nSoit sûr de lire le <#416478130614697994> !\n\n__**Voici les liens du WAG :**__\n\n[Site Internet](https://wearegamers.online/) | [Youtube](https://www.youtube.com/channel/UCi7qtDdexjU-07KDdDFOsNw) | [Twitch](https://www.twitch.tv/weareonlive) | [Invite tes amis](https://discord.gg/uNpSbZr)",
+                "description": "Nous espérons que tu vas t'amuser !\nSoit sûr de lire le <#416478130614697994> !\n\n__**Voici les liens du WAG :**__\n\n[Site Internet](https://wearegamers.online/) | [Youtube](https://www.youtube.com/channel/UCi7qtDdexjU-07KDdDFOsNw) | [Twitch](https://www.twitch.tv/weareonlive) | [Utip](https://utip.io/wearegamers) | [Invite tes amis](https://discord.gg/uNpSbZr)",
                 "thumbnail": {
                     "url": "https://images-ext-1.discordapp.net/external/8ejf4mlVIWzN2qrbiSPnHEMrQ_NvG72nes1Kn6VGTMA/https/media.discordapp.net/attachments/416477999698018314/689834041326698627/t.gif"
                 },
-                "color": 10106606
+                "color": 2895667
         }})
     }).catch(console.error) 
   })
@@ -32,6 +34,8 @@ bot.on('ready', function () {
     let commandUsed =
       Ping.parse(message) ||
       Help.parse(message) ||
+      Announce.parse(message) ||
+      Welcome.parse(message) ||
       Google.parse(message)
   })
 
