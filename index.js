@@ -5,11 +5,12 @@ const Ping = require('./commands/ping')
 const Help = require('./commands/help')
 const Announce = require('./commands/announce')
 const Welcome = require('./commands/welcome')
+const { TOKEN } = require("./config");
 
 
 bot.on('ready', function () {
     // bot.user.setAvatar('./avatar.png').catch(console.error)
-    //bot.user.setGame('A votre service !').catch(console.error)
+    // bot.user.setGame('A votre service !').catch(console.error)
   })
   
 //   FONCTION MESSAGE PRIVE NOUVEAU MEMBRE
@@ -39,4 +40,4 @@ bot.on('ready', function () {
       Google.parse(message)
   })
 
-bot.login('Njk4MzAwMDUxMTUxMjU3NjMw.XpD6Kg.JZ30tEFSKnjM7q35k278hxGvqrk');
+bot.login(TOKEN);
