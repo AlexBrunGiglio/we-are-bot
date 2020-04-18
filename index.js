@@ -7,21 +7,24 @@ const Announce = require('./commands/announce')
 const Welcome = require('./commands/welcome')
 const { TOKEN } = require("./config");
 const mysql = require('mysql');
-const bumper = 700773977081249834;
+const dateFormat = require('dateformat');
+let connection;
+const disboard = 302050872383242240;
+
 
 
 
 
 bot.on('ready', function () {
     // bot.user.setAvatar('./avatar.png').catch(console.error)
-    //  bot.user.setGame('A votre service !').catch(console.error)
+    // bot.user.setGame('A votre service !').catch(console.error)
 
-     const connection = mysql.createConnection({
-      host     : 'db5000377688.hosting-data.io',
+      connection = mysql.createConnection({
+      host     : '127.0.0.1',
       port     : '3306',
-      user     : 'dbu152819',
-      password : 'Wearebot2020!',
-      database : 'dbs364842'
+      user     : 'wag',
+      password : 'wearegamers',
+      database : 'rasp_db'
     });
 
     connection.connect(err => {
@@ -29,7 +32,7 @@ bot.on('ready', function () {
         console.log('nikoumouk');
         console.log(err);
       }else{
-        console.log("connected");
+        console.log("Je suis connecte a la base de donnee !");
       }
     });
   
@@ -53,24 +56,30 @@ bot.on('ready', function () {
 // FIN FONCTION MP   
 
   bot.on('message', function (message) {
-    if(message.channel.id === bumper){
-      if(message.content.startsWith('!d bump') )
-      {
-        let date = message.createdAt;
-        let user = message.author.id;
-        
-        connection.query('SELECT id_autor FROM bump', (err, rows) => {
-            if(err) throw err;
-              let sql;
-            if(rows.lenght == 1){
-              sql = `UPDATE (created_at, point) from bump where (id_autor = '${user}')`
-            } else if(rows.lenght > 1 || rows.lenght == NULL) {
-              sql = `INSERT INTO bump (id_autor, created_at, point) values ('${user}', '${date}', 1)` 
-            }
-            connection.query(sql,console.log);
-        });
+      if (message.channel.id === '700773977081249834') {
+          if (message.content.startsWith('!d bump')) {
+              let date = message.createdAt;
+              let user = message.author.id;
+  
+              if ((message.channel.id === '700773977081249834') && (message.author.id === 'disboard') && (message.content === 'Bump effectué')) {
+  
+                  connection.query('SELECT id_autor, point FROM bump', (err, rows) => {
+                      let count = Object.keys(rows).length;
+  
+                      if (err) throw err;
+                      let sql;
+                      if (count < 1 || count == null) {
+                          sql = `INSERT INTO bump (id_autor, created_at, point) values ('${user}', '${date}', 1)`;
+  
+                      } else if (count > 0) {
+                          var new_date = dateFormat(date, "yyyy-mm-dd HH:MM:ss");
+                          sql = `UPDATE bump set created_at =\'${new_date}\' where id_autor = ${user}`;
+                      }
+                      connection.query(sql, console.log);
+                  });
+              }
+          }
       }
-    }
   });
 
   bot.on('message', function (message) {    
