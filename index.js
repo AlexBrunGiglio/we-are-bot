@@ -6,11 +6,33 @@ const Help = require('./commands/help')
 const Announce = require('./commands/announce')
 const Welcome = require('./commands/welcome')
 const { TOKEN } = require("./config");
+const mysql = require('mysql');
+const bumper = 700773977081249834;
+
+
 
 
 bot.on('ready', function () {
     // bot.user.setAvatar('./avatar.png').catch(console.error)
-    // bot.user.setGame('A votre service !').catch(console.error)
+    //  bot.user.setGame('A votre service !').catch(console.error)
+
+     const connection = mysql.createConnection({
+      host     : 'db5000377688.hosting-data.io',
+      port     : '3306',
+      user     : 'dbu152819',
+      password : 'Wearebot2020!',
+      database : 'dbs364842'
+    });
+
+    connection.connect(err => {
+      if(err){
+        console.log('nikoumouk');
+        console.log(err);
+      }else{
+        console.log("connected");
+      }
+    });
+  
   })
   
 //   FONCTION MESSAGE PRIVE NOUVEAU MEMBRE
@@ -30,6 +52,26 @@ bot.on('ready', function () {
   })
 // FIN FONCTION MP   
 
+  bot.on('message', function (message) {
+    if(message.channel.id === bumper){
+      if(message.content.startsWith('!d bump') )
+      {
+        let date = message.createdAt;
+        let user = message.author.id;
+        
+        connection.query('SELECT id_autor FROM bump', (err, rows) => {
+            if(err) throw err;
+              let sql;
+            if(rows.lenght == 1){
+              sql = `UPDATE (created_at, point) from bump where (id_autor = '${user}')`
+            } else if(rows.lenght > 1 || rows.lenght == NULL) {
+              sql = `INSERT INTO bump (id_autor, created_at, point) values ('${user}', '${date}', 1)` 
+            }
+            connection.query(sql,console.log);
+        });
+      }
+    }
+  });
 
   bot.on('message', function (message) {    
     let commandUsed =
@@ -38,6 +80,8 @@ bot.on('ready', function () {
       Announce.parse(message) ||
       Welcome.parse(message) ||
       Google.parse(message)
-  })
+  });
+
+  
 
 bot.login(TOKEN);
