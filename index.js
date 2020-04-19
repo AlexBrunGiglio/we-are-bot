@@ -9,7 +9,7 @@ const { TOKEN } = require("./config");
 const mysql = require('mysql');
 const dateFormat = require('dateformat');
 let connection;
-const disboard = 302050872383242240;
+
 
 
 
@@ -55,31 +55,52 @@ bot.on('ready', function () {
   })
 // FIN FONCTION MP   
 
-  bot.on('message', function (message) {
-      if (message.channel.id === '700773977081249834') {
-          if (message.content.startsWith('!d bump')) {
-              let date = message.createdAt;
-              let user = message.author.id;
+  bot.on('message', async function (message) {
+    if (message.channel.id === '700773977081249834') {
+      // console.log(message.author.bot);
+      if (message.content.startsWith('!d bump')) {
+        //console.log(message.content);
+        let date = message.createdAt;
+        let user = message.author.id;
   
-              if ((message.channel.id === '700773977081249834') && (message.author.id === 'disboard') && (message.content === 'Bump effectué')) {
+        // const discordEmbed = new Discord.MessageEmbed()
+       // let varTest = await message.channel.fetchMessages()
+        //console.log(varTest);
+        
+        // console.log(message.channel.id === '700773977081249834');
+        // console.log(message);
+         
+         var messageBot = message.filter(msg => msg.author.bot);
+console.log(messageBot)
+        
   
-                  connection.query('SELECT id_autor, point FROM bump', (err, rows) => {
-                      let count = Object.keys(rows).length;
   
-                      if (err) throw err;
-                      let sql;
-                      if (count < 1 || count == null) {
-                          sql = `INSERT INTO bump (id_autor, created_at, point) values ('${user}', '${date}', 1)`;
+        if ((message.channel.id === '700773977081249834') && (message.content.includes("attendez encore"))) {
   
-                      } else if (count > 0) {
-                          var new_date = dateFormat(date, "yyyy-mm-dd HH:MM:ss");
-                          sql = `UPDATE bump set created_at =\'${new_date}\' where id_autor = ${user}`;
-                      }
-                      connection.query(sql, console.log);
-                  });
-              }
-          }
+          console.log("Vous respectez la condition");
+          connection.query('SELECT id_autor, point FROM bump', (err, rows) => {
+            let count = Object.keys(rows).length;
+  
+            if (err) throw err;
+            let sql;
+            if (count < 1 || count == null) {
+              sql = `INSERT INTO bump (id_autor, created_at, point) values ('${user}', '${date}', 1)`;
+  
+            } else if (count > 0) {
+              var new_date = dateFormat(date, "yyyy-mm-dd HH:MM:ss");
+              sql = `UPDATE bump set created_at =\'${new_date}\' where id_autor = ${user}`;
+            }
+            connection.query(sql, console.log);
+          });
+        }
+        else {
+          let bumpMsg = message;
+          // console.log(bump_msg);
+  
+          console.log("Vous ne respectez pas la condition");
+        }
       }
+    }
   });
 
   bot.on('message', function (message) {    
