@@ -56,7 +56,7 @@ bot.on('guildMemberAdd', function (member) {
 // FIN FONCTION MP   
 
 
-// FONCTION LECTURE BUMP ANNULEE
+// FONCTION LECTURE BUMP
 // bot.on('message', async function (message) {
 //   if (message.channel.id === '700773977081249834') {
 //     // console.log(message.author.bot);
